@@ -70,7 +70,7 @@ const getCart = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const cart = await Cart.findOne({
+    let cart = await Cart.findOne({
       where: { user_id: userId },
       include: [
         {
@@ -99,8 +99,12 @@ const getCart = async (req, res) => {
     });
 
     if (!cart) {
-      return res.status(404).json({ error: "Cart not found" });
+      cart = await Cart.create({ user_id: userId });
+      cart.CartItems = [];
     }
+
+    res.status(200).json(cart);
+
 
     const cartItemsWithStatus = cart.CartItems.map((cartItem) => {
       const productExists = !!cartItem.Product;
