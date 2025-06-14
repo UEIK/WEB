@@ -103,9 +103,6 @@ const getCart = async (req, res) => {
       cart.CartItems = [];
     }
 
-    res.status(200).json(cart);
-
-
     const cartItemsWithStatus = cart.CartItems.map((cartItem) => {
       const productExists = !!cartItem.Product;
       return {
@@ -115,12 +112,14 @@ const getCart = async (req, res) => {
       };
     });
 
-    res.status(200).json(cart);
+    res.status(200).json({ ...cart.toJSON(), CartItems: cartItemsWithStatus });
+
   } catch (error) {
     console.error("Error fetching cart:", error);
     res.status(500).json({ error: "Failed to fetch cart" });
   }
 };
+
 
 const updateCartItem = async (req, res) => {
   try {
