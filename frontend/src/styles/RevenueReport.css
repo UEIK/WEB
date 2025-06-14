@@ -1,0 +1,23 @@
+.filter-section-report {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-section label {
+    font-weight: 600;
+}
+
+.filter-section select {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.viewproduct-link {
+    font-weight: bold;
+    color: #000000;
+}

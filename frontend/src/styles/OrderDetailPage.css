@@ -1,0 +1,46 @@
+.order-detail-container {
+  padding: 40px 20px;
+  font-family: "Georgia", serif;
+}
+
+.receiver-info {
+  margin-bottom: 30px;
+  font-size: 16px;          /* nhỏ hơn */
+  line-height: 1.5;
+}
+
+.product-table {
+  width: 90%;               /* thu hẹp tương tự orderpage */
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 14px;          /* nhỏ lại cho đồng bộ */
+  text-align: center;
+}
+
+.product-table th {
+  background-color: #000;
+  color: #fff;
+  padding: 12px;            /* giảm padding */
+  font-size: 15px;
+}
+
+.product-table td {
+  padding: 12px;            /* giảm padding */
+}
+
+.product-table tr.odd {
+  background-color: #f2f2f7;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.product-info img {
+  width: 50px;              /* thu nhỏ hình ảnh */
+  height: auto;
+  object-fit: cover;
+}
