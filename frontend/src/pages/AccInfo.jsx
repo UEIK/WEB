@@ -9,7 +9,7 @@ const AccountInfo = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
     const savedUser = localStorage.getItem("user")
     if (savedUser) {
       setUser(JSON.parse(savedUser))
@@ -17,17 +17,17 @@ const AccountInfo = () => {
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    alert("Logged out successfully!");
-    navigate("/account");
-    window.scrollTo(0, 0);
+    localStorage.removeItem("user")
+    localStorage.removeItem("token")
+    setUser(null)
+    alert("Logged out successfully!")
+    navigate("/account")
+    window.scrollTo(0, 0)
   }
 
   const handleAdminClick = () => {
-    navigate("/admin/user");
-    window.scrollTo(0, 0);
+    navigate("/admin/user")
+    window.scrollTo(0, 0)
   }
 
   if (!user) {
@@ -64,6 +64,10 @@ const AccountInfo = () => {
     )
   }
 
+  // Determine display name for Google or regular signup
+  const displayName = user.username || user.name || ''
+  const nameLabel = user.username ? 'Username' : 'Name'
+
   return (
     <div className="acc-container">
       <div className="acc-card">
@@ -79,6 +83,7 @@ const AccountInfo = () => {
 
         <div className="acc-content">
           <div className="acc-user-info">
+            {/* Display either username (regular) or name (Google) */}
             <div className="acc-info-row">
               <div className="acc-info-label">
                 <div className="acc-label-icon">
@@ -87,10 +92,10 @@ const AccountInfo = () => {
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 </div>
-                <span>Username</span>
+                <span>{nameLabel}</span>
               </div>
               <div className="acc-info-value">
-                <span className="acc-value-text">{user.username}</span>
+                <span className="acc-value-text">{displayName}</span>
               </div>
             </div>
 

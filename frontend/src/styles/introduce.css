@@ -1,135 +1,417 @@
-/* Reset mặc định */
+/* src/styles/introduce.css */
+
+/* ===== Reset mặc định ===== */
 body,
 html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
-.footer-html {
-  background-color: #06121e;
-}
-
+/* ===== Video ===== */
 .introduce-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #000000;
-  overflow: hidden;
+  background-color: #000;
 }
-
-/* Video chiếm toàn bộ chiều ngang, chiều cao tự điều chỉnh */
 .introduce-video {
   width: auto;
   height: auto;
-  display: block;
   object-fit: contain;
 }
 
-.text {
-  position: absolute;
-  top: 22%;
-  left: 22%;
-  color: white;
-  font-size: 400px;
-  font-family: serif;
-  font-weight: bold;
-}
-
+/* ===== Intro text ===== */
 .intro_container {
   width: 80%;
-  margin: auto;
+  margin: 50px auto;
   text-align: center;
-  padding: 50px 0;
 }
-
 .title {
   font-size: 48px;
-  font-weight: bold;
-  margin-top: 50px;
-  margin-bottom: 80px;
-  line-height: 1.2;
+  margin-bottom: 40px;
 }
-
-/* Chia 2 cột */
 .text-container {
   display: flex;
-  justify-content: space-between;
   gap: 30px;
-  text-align: left;
-  font-size: 25px;
-  color: #333;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 }
-
 .column-introduce {
-  width: 48%;
+  flex: 1;
+  font-size: 20px;
+  line-height: 1.6;
+  text-align: left;
 }
 
-/* Phần thống kê */
+/* ===== Stats ===== */
 .stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 50px;
+  margin: 50px 0;
 }
-
 .stat {
+  text-align: center;
   font-size: 60px;
   font-weight: bold;
-  text-align: center;
 }
-
 .stat span {
   font-size: 20px;
   font-weight: normal;
 }
+.stat .label {
+  font-size: 24px;
+  margin-top: 8px;
+  color: #555;
+}
 
-.label {
-  font-size: 30px;
+/* ===== Top 3 Products - Enhanced ===== */
+.top-products {
+  width: 85%;
+  margin: 80px auto;
+  text-align: center;
+  padding: 40px 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+}
+
+.top-products h3 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: #2c3e50;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.top-products h3::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffa500);
+  border-radius: 2px;
 }
 
 .image-3-container {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 20px;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  padding: 0 20px;
 }
 
-/* Định dạng từng ảnh */
 .image-box {
-  flex: 1;
+  position: relative;
+  width: 320px;
+  height: 380px;
   overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: #fff;
+  cursor: pointer;
 }
 
-.image-box img {
+.image-box:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.image-box:nth-child(1) {
+  border: 3px solid #ffd700;
+}
+
+.image-box:nth-child(2) {
+  border: 3px solid #c0c0c0;
+}
+
+.image-box:nth-child(3) {
+  border: 3px solid #cd7f32;
+}
+
+.product-img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 280px;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
+.image-box:hover .product-img {
+  transform: scale(1.1);
+}
 
+.medal-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 70px;
+  height: 70px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  z-index: 10;
+  animation: float 3s ease-in-out infinite;
+}
 
-/* Responsive cho màn hình nhỏ */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.image-box .label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+  padding: 20px 15px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: #2c3e50;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Top 3 Buyers - Enhanced ===== */
+.top-buyers {
+  width: 85%;
+  margin: 80px auto;
+  text-align: center;
+  padding: 40px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+}
+
+.top-buyers h3 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.top-buyers h3::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffa500);
+  border-radius: 2px;
+}
+
+.buyer-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+.buyer-box {
+  width: 320px;
+  height: 380px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.buyer-box:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.buyer-box:nth-child(1) {
+  border: 3px solid #ffd700;
+}
+
+.buyer-box:nth-child(2) {
+  border: 3px solid #c0c0c0;
+}
+
+.buyer-box:nth-child(3) {
+  border: 3px solid #cd7f32;
+}
+
+.buyer-rank {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.buyer-rank .medal-icon {
+  position: static;
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.buyer-info {
+  padding: 25px 20px;
+  text-align: center;
+  background: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buyer-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  text-transform: capitalize;
+}
+
+.buyer-phone {
+  font-size: 16px;
+  color: #6c757d;
+  margin-bottom: 12px;
+  font-family: "Courier New", monospace;
+}
+
+.buyer-qty {
+  font-size: 18px;
+  color: #495057;
+  font-weight: 600;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .image-box,
+  .buyer-box {
+    width: 280px;
+    height: 340px;
+  }
+
+  .buyer-rank {
+    height: 160px;
+  }
+
+  .image-3-container,
+  .buyer-list {
+    gap: 20px;
+  }
+}
+
 @media (max-width: 768px) {
-  .text-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .column {
-    width: 100%;
-  }
-
+  .text-container,
   .stats {
     flex-direction: column;
+    align-items: center;
     gap: 20px;
   }
 
-  .image-3-container {
+  .top-products,
+  .top-buyers {
+    width: 95%;
+    margin: 60px auto;
+    padding: 30px 0;
+  }
+
+  .top-products h3,
+  .top-buyers h3 {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  .image-box,
+  .buyer-box {
+    width: 280px;
+    height: 320px;
+  }
+
+  .product-img {
+    height: 220px;
+  }
+
+  .medal-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .image-box .label {
+    font-size: 16px;
+    padding: 15px 12px;
+  }
+
+  .buyer-rank {
+    height: 140px;
+  }
+
+  .buyer-info {
+    padding: 20px 15px;
+  }
+
+  .buyer-name {
+    font-size: 20px;
+  }
+
+  .buyer-qty {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-3-container,
+  .buyer-list {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .image-box,
+  .buyer-box {
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .top-products h3,
+  .top-buyers h3 {
+    font-size: 24px;
   }
 }

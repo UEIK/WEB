@@ -7,6 +7,7 @@ router.post("/", orderController.placeOrder); // xử lý POST /api/order
 router.get("/admin", orderController.getAllOrders);
 router.put('/:id/status', orderController.updateOrderStatus);
 router.get("/user/:userId", orderController.getOrdersByUserId);
+router.get("/details", orderController.getAllOrderDetails);
 
 
 module.exports = router;

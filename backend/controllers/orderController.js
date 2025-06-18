@@ -214,4 +214,66 @@ exports.getOrdersByUserId = async (req, res) => {
   }
 };
 
+exports.getAllOrderDetails = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await OrderDetail.findAndCountAll({
+      include: [
+        {
+          model: Product,
+          as: "Product",
+          attributes: ["name"],
+          include: [
+            {
+              model: Gallery,
+              as: "Galleries",
+              attributes: ["thumbnail"],
+              required: false,
+            },
+          ],
+        },
+        {
+          model: Order,
+          as: "Order",
+          attributes: ["address", "name", "phone_number", "order_date", "status"],
+        }
+      ],
+      order: [["id", "DESC"]],
+      limit,
+      offset,
+    });
+
+    const totalPages = Math.ceil(count / limit);
+
+    const data = rows.map((d) => ({
+      id: d.id,
+      order_id: d.order_id,
+      productname: d.Product?.name,
+      image: d.Product?.Galleries?.[0]?.thumbnail || "",
+      quantity: d.quantity,
+      price: d.price,
+      size: d.size,
+      address: d.Order?.address,
+      name: d.Order?.name,
+      phone_number: d.Order?.phone_number,
+      order_date: d.Order?.order_date,
+      status: d.Order?.status,
+    }));
+
+    res.status(200).json({
+      code: 200,
+      message: "Lấy tất cả chi tiết đơn hàng thành công",
+      data,
+      totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Lỗi lấy tất cả chi tiết đơn hàng:", error);
+    res.status(500).json({ error: "Lỗi máy chủ", detail: error.message });
+  }
+};
+
 

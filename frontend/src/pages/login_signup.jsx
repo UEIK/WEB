@@ -1,74 +1,88 @@
-// src/pages/login_signup.jsx
-import { useState } from "react"
+// src/pages/LoginSignup.jsx
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import { GoogleLogin } from "@react-oauth/google"
 import "../styles/login_signup.css"
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3030"
 
 const LoginSignup = () => {
   const [action, setAction] = useState("Login")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
   const navigate = useNavigate()
 
-  // ✅ Login thường (giữ nguyên)
+  // Handle Google OAuth
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    try {
+      const googleToken = credentialResponse.credential
+      const res = await axios.post(
+        `${API_URL}/api/auth/google`,
+        { token: googleToken },
+        { headers: { "Content-Type": "application/json" } }
+      )
+
+      const user = res.data.data
+      localStorage.setItem("token", res.data.token)
+      localStorage.setItem("user", JSON.stringify(user))
+      alert("✅ Logged in with Google successfully!")
+      navigate("/home")
+    } catch (err) {
+      console.error("Google login error:", err.response?.data || err.message)
+      alert(`❌ ${err.response?.data?.message || "Google login failed!"}`)
+    }
+  }
+
+  // Handle normal Login / SignUp
   const handleSubmit = async () => {
     if (action === "Login") {
       if (!email || !password) {
-        alert("❌ Bạn cần nhập đầy đủ Email và Password!")
+        alert("❌ Please enter both Email and Password!")
         return
       }
-
       try {
         const res = await axios.post(
-          "http://localhost:3030/api/auth/login",
+          `${API_URL}/api/auth/login`,
           { email, password },
           { headers: { "Content-Type": "application/json" } }
         )
-
         const user = res.data.data
         localStorage.setItem("token", res.data.token)
         localStorage.setItem("user", JSON.stringify(user))
-
-        alert("✅ Đăng nhập thành công!")
+        alert("✅ Login successful!")
 
         const redirectPath = localStorage.getItem("redirectAfterLogin")
         if (redirectPath) {
           localStorage.removeItem("redirectAfterLogin")
           navigate(redirectPath)
         } else {
-          if (user.role_id === 2) {
-            navigate("/admin/user")
-          } else {
-            navigate("/home")
-          }
+          user.role_id === 2 ? navigate("/admin/user") : navigate("/home")
         }
       } catch (err) {
-        console.error("🚀 ~ login error:", err.response?.data || err.message)
-        alert(`❌ ${err.response?.data?.message || "Đăng nhập thất bại!"}`)
+        console.error("Login error:", err.response?.data || err.message)
+        alert(`❌ ${err.response?.data?.message || "Login failed!"}`)
       }
     } else {
       if (!username || !email || !password) {
-        alert("❌ Bạn cần nhập đầy đủ Username, Email và Password!")
+        alert("❌ Please fill in Username, Email, and Password!")
         return
       }
-
       try {
-        const res = await axios.post(
-          "http://localhost:3030/api/auth/register",
+        await axios.post(
+          `${API_URL}/api/auth/register`,
           { name: username, email, password },
           { headers: { "Content-Type": "application/json" } }
         )
-
-        alert("✅ Đăng ký thành công! Đăng nhập ngay nào!")
+        alert("✅ Registration successful! Please log in now.")
         setAction("Login")
         setUsername("")
         setEmail("")
         setPassword("")
       } catch (err) {
-        console.error("🚀 ~ register error:", err.response?.data || err.message)
-        alert(`❌ ${err.response?.data?.message || "Đăng ký thất bại!"}`)
+        console.error("Registration error:", err.response?.data || err.message)
+        alert(`❌ ${err.response?.data?.message || "Registration failed!"}`)
       }
     }
   }
@@ -95,49 +109,57 @@ const LoginSignup = () => {
           <div className="account-input">
             <input
               type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="account-input">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="account-submit-container">
+            <div className="account-submit" onClick={handleSubmit}>
+              {action === "Login" ? "Sign in" : "Create Account"}
+            </div>
+
+            {action === "Login" ? (
+              <>  
+                <div className="no-account-text">Don't have an account?</div>
+                <div className="account-submit secondary" onClick={() => setAction("Sign Up")}>  
+                  Sign Up
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="no-account-text">Already have an account?</div>
+                <div className="account-submit secondary" onClick={() => setAction("Login")}>  
+                  Log In
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Social login */}
+          <div className="social-login" style={{ marginTop: 24, textAlign: "center" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={() => alert("❌ Google login failed!")}
             />
           </div>
 
-          <div className="account-input">
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div className="return-store" onClick={() => navigate("/home")}>  
+            Return to Store
           </div>
-        </div>
-
-        <div className="account-submit-container">
-          <div className="account-submit" onClick={handleSubmit}>
-            {action === "Login" ? "Sign in" : "Create"}
-          </div>
-
-          {action === "Login" ? (
-            <>
-              <div className="no-account-text">You don't have an account?</div>
-              <div className="account-submit secondary" onClick={() => setAction("Sign Up")}>
-                Sign up
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="no-account-text">You already have an account?</div>
-              <div className="account-submit secondary" onClick={() => setAction("Login")}>
-                Login
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="return-store" onClick={() => navigate("/home")}>
-          Return to Store
         </div>
       </div>
-    </div>
   )
 }
 
